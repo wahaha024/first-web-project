@@ -1,11 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<title>我的一个文件</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>我的个人主页</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-padding-top: 64px;
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding-top: 64px;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #24364b;
+            background: #eef3f9;
+        }
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 55px;
+            background: #ffffff;
+            border-bottom: 1px solid #dde6ef;
+        }
+        .nav a {
+            color: #075d9c;
+            text-decoration: none;
+            padding: 6px 8px;
+            border-bottom: 2px solid transparent;
+        }
+        .nav a:hover {
+            border-bottom-color: #075d9c;
+        }
+        main {
+            max-width: 800px;
+            margin: 32px auto;
+            padding: 36px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(36, 54, 75, .06);
+        }
+        h1 {
+            margin: 0 0 12px 0;
+            font-size: 30px;
+            color: #075d9c;
+        }
+        h2 {
+            margin: 0 0 14px;
+            font-size: 22px;
+            color: #123c60;
+        }
+        h3 {
+            margin: 0 0 10px 0;
+            font-size: 19px;
+        }
+        p {
+            margin: 0 0 12px;
+        }
+        a {
+            color: #0867a6;
+        }
+        img {
+            margin:10px 0;
+            border-radius:8px;
+        }
+        .hobby-wrap{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top:20px;
+        }
+        .hobby-card{
+            flex:1 1 200px;
+            padding: 20px;
+            background: #fbfcfe;
+            border: 1px solid #dde6ef;
+            border-radius: 12px;
+        }
+        div:target{
+            background-color:#f0f7ff;
+            padding:12px;
+            border-radius:10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>给14班小孩看的</h1>
-    <p>你们就是一群乐乐</p>
+    <nav class="nav">
+        <a href="#about">我的身份</a>
+        <a href="#interest">我的爱好</a>
+        <a href="#study">正在学习</a>
+        <a href="#contact">联系方式</a>
+    </nav>
+
+    <main>
+        <div id="about">
+            <h1>我的个人主页</h1>
+            <h2>姓名：王天瑞</h2>
+            <p>你好！我是一名热爱成长的学生，喜欢阅读和运动。</p>
+            <img src="photo.jpg" width="300" alt="我的照片">
+        </div>
+
+        <div id="interest">
+            <h2>兴趣爱好</h2>
+            <div class="hobby-wrap">
+                <div class="hobby-card">
+                    <h3>阅读文学书籍</h3>
+                    <p>在书本里感受不同的故事与思想。</p>
+                </div>
+                <div class="hobby-card">
+                    <h3>看足球比赛</h3>
+                    <p>享受赛场的激情与团队拼搏。</p>
+                </div>
+                <div class="hobby-card">
+                    <h3>跑步</h3>
+                    <p>锻炼身体，放松自己。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="study">
+            <h3 style="color:#56a8b3">正在做的事 </h3>
+            <p>正在学习英语概要写作，学习基础网页编程（都是我的课）</p>
+            <p>推荐网站：<a href="https://www.bilibili.com" target="_blank">B站</a></p>
+        </div>
+
+        <div id="contact">
+            <h3>联系方式</h3>
+            <p>欢迎和我交流学习！</p>
+        </div>
+    </main>
 </body>
 </html>
