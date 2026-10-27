@@ -1,145 +1,1443 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>我的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="王天瑞的个人主页 —— 一名热爱成长的学生，喜欢阅读文学、看足球、跑步，正在学习英语概要写作与网页编程。">
+    <meta name="theme-color" content="#f3f7fc">
+    <title>王天瑞 · 个人主页</title>
+    <script>
+        /* 尽早确定主题与 js 标记，避免首帧闪烁 */
+        (function () {
+            var html = document.documentElement;
+            html.classList.add('js');
+            var saved = null;
+            try { saved = localStorage.getItem('wtr-homepage-theme'); } catch (e) { saved = null; }
+            var theme = saved === 'dark' || saved === 'light'
+                ? saved
+                : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            html.setAttribute('data-theme', theme);
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a1220' : '#f3f7fc');
+        })();
+    </script>
     <style>
-        * {
-            box-sizing: border-box;
+        /* ============ 1. 设计变量 ============ */
+        :root {
+            --primary: #0b5fa5;
+            --primary-2: #0e7fc4;
+            --primary-rgb: 11, 95, 165;
+            --accent: #0fa89a;
+            --accent-rgb: 15, 168, 154;
+
+            --bg: #f3f7fc;
+            --surface: #ffffff;
+            --surface-2: #f6fafd;
+            --text: #15283c;
+            --muted: #5a6f85;
+            --border: #dde7f1;
+
+            --shadow-sm: 0 1px 2px rgba(16, 42, 67, .06), 0 2px 10px rgba(16, 42, 67, .05);
+            --shadow-md: 0 14px 34px rgba(16, 42, 67, .10);
+            --shadow-lg: 0 30px 70px rgba(16, 42, 67, .16);
+
+            --radius: 18px;
+            --radius-lg: 28px;
+            --maxw: 1120px;
+            --header-h: 72px;
+            --ease: cubic-bezier(.22, .61, .36, 1);
+            --delay: 0s;
+            color-scheme: light;
         }
+
+        [data-theme="dark"] {
+            --primary: #5aa9ff;
+            --primary-2: #8ec8ff;
+            --primary-rgb: 90, 169, 255;
+            --accent: #3fd6c6;
+            --accent-rgb: 63, 214, 198;
+
+            --bg: #0a1220;
+            --surface: #111c2c;
+            --surface-2: #0e1826;
+            --text: #e7eefa;
+            --muted: #9bacc2;
+            --border: #223147;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --shadow-md: 0 16px 40px rgba(0, 0, 0, .45);
+            --shadow-lg: 0 34px 80px rgba(0, 0, 0, .55);
+            color-scheme: dark;
+        }
+
+        /* ============ 2. 基础重置 ============ */
+        *, *::before, *::after { box-sizing: border-box; }
+
         html {
-            scroll-padding-top: 64px;
             scroll-behavior: smooth;
+            scroll-padding-top: calc(var(--header-h) + 20px);
+            -webkit-text-size-adjust: 100%;
         }
+
         body {
             margin: 0;
-            padding-top: 64px;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
+                         "Source Han Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
             font-size: 16px;
-            line-height: 1.7;
-            color: #24364b;
-            background: #eef3f9;
+            line-height: 1.75;
+            color: var(--text);
+            background:
+                radial-gradient(1100px 520px at 8% -10%, rgba(var(--primary-rgb), .14), transparent 62%),
+                radial-gradient(900px 500px at 100% 2%, rgba(var(--accent-rgb), .12), transparent 58%),
+                var(--bg);
+            background-attachment: fixed;
+            transition: background-color .35s ease, color .35s ease;
         }
-        .nav {
-            position: fixed;
+
+        img { max-width: 100%; height: auto; }
+        a { color: var(--primary); }
+
+        h1, h2, h3 { line-height: 1.25; letter-spacing: -.01em; }
+        h1, h2 { text-wrap: balance; }
+
+        :focus-visible {
+            outline: 3px solid rgba(var(--primary-rgb), .45);
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        ::selection { background: rgba(var(--primary-rgb), .22); }
+
+        .container {
+            width: min(var(--maxw), calc(100% - 48px));
+            margin-inline: auto;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 16px;
+            top: -100px;
+            z-index: 300;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            font-size: .9rem;
+            transition: top .2s ease;
+        }
+        .skip-link:focus { top: 12px; }
+
+        /* ============ 3. 顶栏 ============ */
+        .site-header {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 100;
-            height: 64px;
+            background: rgba(255, 255, 255, .78);
+            -webkit-backdrop-filter: saturate(180%) blur(14px);
+            backdrop-filter: saturate(180%) blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
+        }
+        [data-theme="dark"] .site-header { background: rgba(10, 18, 32, .72); }
+        .site-header.is-scrolled {
+            border-bottom-color: var(--border);
+            box-shadow: 0 6px 24px rgba(16, 42, 67, .06);
+        }
+
+        .progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 3px;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 0 3px 3px 0;
+            will-change: transform;
+        }
+
+        .header-inner {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 16px;
+            height: var(--header-h);
+        }
+        .brand { justify-self: start; }
+        .nav { justify-self: center; }
+        .header-actions { justify-self: end; }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+        }
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(140deg, var(--primary), var(--accent));
+            color: #fff;
+            font-size: 1.1rem;
+            letter-spacing: 0;
+            box-shadow: 0 8px 18px rgba(var(--primary-rgb), .28);
+        }
+        .brand-text { display: flex; flex-direction: column; line-height: 1.15; font-size: .98rem; }
+        .brand-text small {
+            font-size: .68rem;
+            font-weight: 500;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .nav {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 55px;
-            background: #ffffff;
-            border-bottom: 1px solid #dde6ef;
+            gap: 4px;
         }
         .nav a {
-            color: #075d9c;
+            padding: 9px 15px;
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: .95rem;
+            font-weight: 600;
             text-decoration: none;
-            padding: 6px 8px;
-            border-bottom: 2px solid transparent;
+            transition: color .2s ease, background .2s ease;
         }
-        .nav a:hover {
-            border-bottom-color: #075d9c;
+        .nav a:hover { color: var(--primary); background: var(--surface-2); }
+        .nav a.active {
+            color: var(--primary);
+            background: rgba(var(--primary-rgb), .10);
         }
-        main {
-            max-width: 800px;
-            margin: 32px auto;
-            padding: 36px;
-            background: #ffffff;
-            border-radius: 14px;
-            box-shadow: 0 4px 20px rgba(36, 54, 75, .06);
+
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+
+        .icon-btn {
+            display: inline-grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform .2s var(--ease), border-color .2s ease, color .2s ease, background .2s ease;
         }
-        h1 {
-            margin: 0 0 12px 0;
-            font-size: 30px;
-            color: #075d9c;
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            color: var(--primary);
+            border-color: rgba(var(--primary-rgb), .45);
         }
-        h2 {
+        .icon-btn svg { width: 19px; height: 19px; }
+
+        /* 主题图标切换 */
+        .icon-moon { display: none; }
+        [data-theme="dark"] .icon-sun { display: none; }
+        [data-theme="dark"] .icon-moon { display: block; }
+
+        /* 移动端菜单按钮 */
+        .menu-btn { display: none; }
+        .menu-btn .bars { position: relative; width: 18px; height: 12px; }
+        .menu-btn .bars span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+            transition: transform .25s var(--ease), opacity .2s ease, top .25s var(--ease);
+        }
+        .menu-btn .bars span:nth-child(1) { top: 0; }
+        .menu-btn .bars span:nth-child(2) { top: 5px; }
+        .menu-btn .bars span:nth-child(3) { top: 10px; }
+        .menu-btn[aria-expanded="true"] .bars span:nth-child(1) { top: 5px; transform: rotate(45deg); }
+        .menu-btn[aria-expanded="true"] .bars span:nth-child(2) { opacity: 0; }
+        .menu-btn[aria-expanded="true"] .bars span:nth-child(3) { top: 5px; transform: rotate(-45deg); }
+
+        /* ============ 4. 首屏 ============ */
+        .hero {
+            position: relative;
+            padding: clamp(36px, 6vw, 76px) 0 clamp(48px, 7vw, 88px);
+            overflow: hidden;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, .85fr);
+            gap: clamp(28px, 5vw, 64px);
+            align-items: center;
+        }
+
+        .eyebrow-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
             margin: 0 0 14px;
-            font-size: 22px;
-            color: #123c60;
+            padding: 7px 16px 7px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--muted);
+            font-size: .85rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
         }
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 19px;
+        .eyebrow-chip .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .18);
         }
-        p {
-            margin: 0 0 12px;
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2.6rem, 6.4vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -.03em;
         }
-        a {
-            color: #0867a6;
+        h1 .h1-dot { color: var(--accent); }
+
+        .typed-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            min-height: 2.2em;
+            margin: 12px 0 0;
+            font-size: clamp(1.02rem, 2.2vw, 1.3rem);
+            font-weight: 700;
+            color: var(--primary);
         }
-        img {
-            margin:10px 0;
-            border-radius:8px;
+        .caret {
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            margin-left: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: blink 1s steps(2, start) infinite;
         }
-        .hobby-wrap{
+
+        .lead {
+            max-width: 46ch;
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+        .lead strong { color: var(--text); font-weight: 700; }
+
+        .hero-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
-            margin-top:20px;
+            gap: 12px;
+            margin-top: 30px;
         }
-        .hobby-card{
-            flex:1 1 200px;
-            padding: 20px;
-            background: #fbfcfe;
-            border: 1px solid #dde6ef;
-            border-radius: 12px;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: .98rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform .22s var(--ease), box-shadow .22s ease,
+                        background .22s ease, color .22s ease, border-color .22s ease;
         }
-        div:target{
-            background-color:#f0f7ff;
-            padding:12px;
-            border-radius:10px;
+        .btn svg { width: 18px; height: 18px; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: #fff;
+            box-shadow: 0 12px 26px rgba(var(--primary-rgb), .28);
+        }
+        [data-theme="dark"] .btn-primary { color: #06233c; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(var(--primary-rgb), .34);
+        }
+        .btn-ghost {
+            background: var(--surface);
+            border-color: var(--border);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-ghost:hover {
+            transform: translateY(-2px);
+            color: var(--primary);
+            border-color: rgba(var(--primary-rgb), .45);
+        }
+
+        .fact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 30px;
+            margin: 32px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+        .fact-row li {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(var(--primary-rgb), .3);
+        }
+        .fact-row strong { font-size: .95rem; font-weight: 700; }
+        .fact-row span {
+            font-size: .76rem;
+            letter-spacing: .08em;
+            color: var(--muted);
+        }
+
+        /* 头像 */
+        .hero-visual {
+            position: relative;
+            justify-self: center;
+            width: min(100%, 400px);
+            padding: 16px;
+        }
+        .photo-frame {
+            position: relative;
+            isolation: isolate;
+            padding: 10px;
+            border-radius: 34px;
+            background: linear-gradient(150deg,
+                rgba(var(--primary-rgb), .35),
+                rgba(var(--accent-rgb), .30));
+            box-shadow: var(--shadow-lg);
+        }
+        .photo-frame::before {
+            content: "";
+            position: absolute;
+            inset: -14px;
+            z-index: -1;
+            border-radius: 46px;
+            background: conic-gradient(from 140deg, var(--primary), var(--accent), var(--primary));
+            filter: blur(40px);
+            opacity: .30;
+            animation: glow 14s linear infinite;
+        }
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            object-position: 50% 18%;
+            border-radius: 25px;
+            background: var(--surface-2);
+        }
+
+        .float-chip {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: .84rem;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: var(--shadow-md);
+            animation: float 7s ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+        .float-chip .emoji { font-size: 1rem; line-height: 1; }
+        .chip-1 { top: 7%; left: -4%; }
+        .chip-2 { top: 45%; right: -6%; }
+        .chip-3 { bottom: 9%; left: 0; }
+
+        /* ============ 5. 通用区块 ============ */
+        .section { padding: clamp(50px, 7vw, 88px) 0; }
+
+        .section-head { max-width: 640px; margin-bottom: clamp(28px, 4vw, 42px); }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 12px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+        .eyebrow::before {
+            content: "";
+            width: 22px;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+        }
+
+        h2 {
+            margin: 0 0 12px;
+            font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+            font-weight: 800;
+        }
+
+        .section-head p { margin: 0; color: var(--muted); }
+
+        /* ============ 6. 关于我 ============ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.12fr .88fr;
+            gap: clamp(24px, 4vw, 48px);
+            align-items: start;
+        }
+        .about-text p { margin: 0 0 16px; color: var(--muted); }
+        .about-text p strong { color: var(--text); }
+
+        .info-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            padding: 8px 24px;
+        }
+        .info-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .info-row:last-child { border-bottom: 0; }
+        .info-row dt {
+            flex: 0 0 auto;
+            color: var(--muted);
+            font-size: .88rem;
+        }
+        .info-row dd {
+            margin: 0;
+            font-size: .93rem;
+            font-weight: 600;
+            text-align: right;
+        }
+        .info-row dd a { text-decoration: none; }
+        .info-row dd a:hover { text-decoration: underline; }
+
+        /* ============ 7. 兴趣爱好 ============ */
+        .hobby-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .hobby-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 28px 26px 26px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: transform .3s var(--ease), box-shadow .3s ease, border-color .3s ease;
+        }
+        .hobby-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -30% -60% auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), .14), transparent 70%);
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+        .hobby-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(var(--primary-rgb), .35);
+            box-shadow: var(--shadow-md);
+        }
+        .hobby-card:hover::after { opacity: 1; }
+
+        .hobby-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 18px;
+            border-radius: 15px;
+            background: linear-gradient(140deg, rgba(var(--primary-rgb), .14), rgba(var(--accent-rgb), .14));
+            color: var(--primary);
+        }
+        .hobby-icon svg { width: 27px; height: 27px; }
+
+        .hobby-num {
+            position: absolute;
+            right: 22px;
+            top: 20px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .1em;
+            color: var(--muted);
+            opacity: .55;
+        }
+
+        .hobby-card h3 { margin: 0 0 8px; font-size: 1.08rem; }
+        .hobby-card p { margin: 0 0 18px; color: var(--muted); font-size: .94rem; }
+
+        .tag {
+            align-self: flex-start;
+            margin-top: auto;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: rgba(var(--accent-rgb), .12);
+            color: var(--accent);
+            font-size: .76rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+        [data-theme="dark"] .tag { color: var(--accent); }
+
+        /* ============ 8. 正在学习 ============ */
+        .study-grid {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: clamp(24px, 4vw, 48px);
+            align-items: start;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 10px;
+            bottom: 14px;
+            width: 2px;
+            border-radius: 2px;
+            background: linear-gradient(var(--primary), var(--accent));
+            opacity: .28;
+        }
+        .timeline li {
+            position: relative;
+            padding: 0 0 28px 38px;
+        }
+        .timeline li:last-child { padding-bottom: 0; }
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 7px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 5px rgba(var(--primary-rgb), .10);
+        }
+        .timeline h3 {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 6px;
+            font-size: 1.05rem;
+        }
+        .timeline p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+        .badge {
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(var(--primary-rgb), .10);
+            color: var(--primary);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        .link-card {
+            position: relative;
+            overflow: hidden;
+            padding: 30px 28px;
+            border-radius: var(--radius);
+            background: linear-gradient(150deg,
+                rgba(var(--primary-rgb), .10),
+                rgba(var(--accent-rgb), .12));
+            border: 1px solid rgba(var(--primary-rgb), .18);
+        }
+        .link-card::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            bottom: -70px;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            border: 1px solid rgba(var(--primary-rgb), .18);
+        }
+        .link-card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+        .link-card p { margin: 0 0 20px; color: var(--muted); font-size: .94rem; }
+
+        /* ============ 9. 联系方式 ============ */
+        .contact-card {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 30px;
+            align-items: center;
+            padding: clamp(28px, 5vw, 52px);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #0b4f8a 0%, #0b5fa5 45%, #0a8f88 100%);
+            color: #fff;
+            box-shadow: var(--shadow-lg);
+        }
+        .contact-card::before {
+            content: "";
+            position: absolute;
+            right: -120px;
+            top: -140px;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, .22), transparent 65%);
+            pointer-events: none;
+        }
+        .contact-card h2 { margin: 0 0 10px; color: #fff; }
+        .contact-card .contact-lead {
+            margin: 0;
+            max-width: 40ch;
+            color: rgba(255, 255, 255, .82);
+            font-size: .98rem;
+        }
+        .mail-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            border: 0;
+            border-radius: 999px;
+            background: #fff;
+            color: #0b4f8a;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
+            transition: transform .22s var(--ease), box-shadow .22s ease;
+        }
+        .mail-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 38px rgba(0, 0, 0, .24); }
+        .mail-btn svg { width: 19px; height: 19px; }
+        .mail-hint {
+            margin: 12px 0 0;
+            color: rgba(255, 255, 255, .72);
+            font-size: .8rem;
+        }
+        .contact-side {
+            justify-self: end;
+            width: 100%;
+            max-width: 280px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .10);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+        }
+        .contact-side h3 {
+            margin: 0 0 10px;
+            font-size: .82rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .75);
+        }
+        .contact-side ul { margin: 0; padding: 0; list-style: none; }
+        .contact-side li {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .16);
+            font-size: .88rem;
+        }
+        .contact-side li:last-child { border-bottom: 0; }
+        .contact-side li span { color: rgba(255, 255, 255, .7); }
+        .contact-side a { color: #fff; text-decoration: none; }
+        .contact-side a:hover { text-decoration: underline; }
+
+        /* ============ 10. 页脚 / 工具 ============ */
+        .site-footer {
+            padding: 30px 0 34px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: .85rem;
+        }
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .footer-inner p { margin: 0; }
+        .footer-inner a { color: var(--muted); text-decoration: none; }
+        .footer-inner a:hover { color: var(--primary); }
+
+        .to-top {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 90;
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(14px);
+            transition: opacity .25s ease, transform .25s var(--ease), visibility .25s;
+        }
+        .to-top.show { opacity: 1; visibility: visible; transform: none; }
+        .to-top:hover { color: var(--primary); border-color: rgba(var(--primary-rgb), .45); }
+        .to-top svg { width: 20px; height: 20px; }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            z-index: 200;
+            transform: translate(-50%, 16px);
+            padding: 11px 22px;
+            border-radius: 999px;
+            background: #16273a;
+            color: #fff;
+            font-size: .88rem;
+            font-weight: 600;
+            box-shadow: 0 16px 34px rgba(0, 0, 0, .25);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease, transform .25s var(--ease);
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+        /* ============ 11. 动效 ============ */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-9px); }
+        }
+        @keyframes glow { to { transform: rotate(360deg); } }
+
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s var(--ease), transform .7s var(--ease);
+            transition-delay: var(--delay, 0s);
+        }
+        .js .reveal.is-visible { opacity: 1; transform: none; }
+
+        /* ============ 12. 响应式 ============ */
+        @media (max-width: 960px) {
+            .hero-grid, .about-grid, .study-grid { grid-template-columns: 1fr; }
+            .hero-visual { order: -1; width: min(100%, 340px); padding: 8px; }
+            .float-chip { font-size: .78rem; padding: 7px 12px; }
+            .chip-1 { left: -2%; }
+            .chip-2 { right: -2%; }
+            .contact-card { grid-template-columns: 1fr; }
+            .contact-side { justify-self: stretch; max-width: none; }
+        }
+
+        @media (max-width: 860px) {
+            .container { width: min(var(--maxw), calc(100% - 36px)); }
+            .menu-btn { display: inline-grid; }
+            .brand-text small { display: none; }
+
+            .header-inner { grid-template-columns: 1fr auto; }
+
+            .nav {
+                grid-column: 1 / -1;
+                grid-row: 1;
+                justify-self: stretch;
+                width: 100%;
+                position: absolute;
+                top: var(--header-h);
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 2px;
+                padding: 10px 14px 16px;
+                border-bottom: 1px solid var(--border);
+                border-radius: 0 0 20px 20px;
+                background: var(--surface);
+                box-shadow: var(--shadow-md);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity .25s ease, transform .25s var(--ease), visibility .25s;
+            }
+            .nav.open { opacity: 1; visibility: visible; transform: none; }
+            .nav a { padding: 13px 16px; border-radius: 12px; font-size: 1rem; }
+        }
+
+        @media (max-width: 560px) {
+            body { background-attachment: scroll; }
+            .hero-visual { width: min(84%, 300px); padding: 4px; }
+            .fact-row { gap: 12px 20px; }
+            .hero-actions .btn { flex: 1 1 auto; }
+            .info-card { padding: 6px 18px; }
+            .info-row { flex-direction: column; gap: 2px; }
+            .info-row dd { text-align: left; }
+            .contact-card { padding: 26px 22px; }
+            .mail-btn { width: 100%; justify-content: center; font-size: .95rem; }
+            .footer-inner { justify-content: center; text-align: center; }
+            .to-top { right: 16px; bottom: 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+            .js .reveal { opacity: 1; transform: none; }
         }
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="#about">我的身份</a>
-        <a href="#interest">我的爱好</a>
-        <a href="#study">正在学习</a>
-        <a href="#contact">联系方式</a>
-    </nav>
+    <a class="skip-link" href="#main">跳到主要内容</a>
 
-    <main>
-        <div id="about">
-            <h1>我的个人主页</h1>
-            <h2>姓名：王天瑞</h2>
-            <p>你好！我是一名热爱成长的学生，喜欢阅读和运动。</p>
-            <img src="photo.jpg" width="300" alt="我的照片">
-        </div>
+    <header class="site-header" id="header">
+        <div class="progress" id="progress" aria-hidden="true"></div>
+        <div class="container header-inner">
+            <a class="brand" href="#top" aria-label="王天瑞的个人主页，回到顶部">
+                <span class="brand-mark" aria-hidden="true">天</span>
+                <span class="brand-text">
+                    王天瑞
+                    <small>Personal Page</small>
+                </span>
+            </a>
 
-        <div id="interest">
-            <h2>兴趣爱好</h2>
-            <div class="hobby-wrap">
-                <div class="hobby-card">
-                    <h3>阅读文学书籍</h3>
-                    <p>在书本里感受不同的故事与思想。</p>
-                </div>
-                <div class="hobby-card">
-                    <h3>看足球比赛</h3>
-                    <p>享受赛场的激情与团队拼搏。</p>
-                </div>
-                <div class="hobby-card">
-                    <h3>跑步</h3>
-                    <p>锻炼身体，放松自己。</p>
-                </div>
+            <nav class="nav" id="nav" aria-label="主导航">
+                <a href="#about">关于我</a>
+                <a href="#interest">兴趣爱好</a>
+                <a href="#study">正在学习</a>
+                <a href="#contact">联系方式</a>
+            </nav>
+
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" type="button" aria-label="切换深色模式" aria-pressed="false">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4.2"></circle>
+                        <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path>
+                    </svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"></path>
+                    </svg>
+                </button>
+
+                <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav">
+                    <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+                </button>
             </div>
         </div>
+    </header>
 
-        <div id="study">
-            <h3 style="color:#56a8b3">正在做的事 </h3>
-            <p>正在学习英语概要写作，学习基础网页编程（都是我的课）</p>
-            <p>推荐网站：<a href="https://www.bilibili.com" target="_blank">B站</a></p>
-        </div>
+    <main id="main">
+        <!-- 首屏 -->
+        <section class="hero" id="top">
+            <div class="container hero-grid">
+                <div class="hero-copy reveal">
+                    <p class="eyebrow-chip"><span class="dot" aria-hidden="true"></span>你好，我是</p>
+                    <h1>王天瑞<span class="h1-dot">.</span></h1>
+                    <p class="typed-line" aria-label="一名热爱成长的学生">
+                        <span id="typed">一名热爱成长的学生</span><span class="caret" aria-hidden="true"></span>
+                    </p>
+                    <p class="lead">
+                        我喜欢阅读和运动，也正在学习英语概要写作与网页编程。
+                        这个页面是我用 <strong>HTML、CSS 和 JavaScript</strong> 一行行搭起来的，
+                        用来记录我正在做的事、喜欢的事，以及还想去尝试的事。
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#about">
+                            认识我一下
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path>
+                            </svg>
+                        </a>
+                        <a class="btn btn-ghost" href="#contact">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m4 7 8 6 8-6"></path>
+                            </svg>
+                            给我写信
+                        </a>
+                    </div>
+                    <ul class="fact-row">
+                        <li><strong>学生</strong><span>现在的身份</span></li>
+                        <li><strong>阅读 · 足球 · 跑步</strong><span>喜欢的事</span></li>
+                        <li><strong>持续学习中</strong><span>正在做的事</span></li>
+                    </ul>
+                </div>
 
-        <div id="contact">
-            <h3>联系方式</h3>
-            <p>邮箱：azzdb123@qq.com</p>
-        </div>
+                <div class="hero-visual reveal" style="--delay:.08s">
+                    <div class="photo-frame">
+                        <img src="photo.jpg" width="1142" height="1231" alt="王天瑞的照片">
+                    </div>
+                    <span class="float-chip chip-1" style="--delay:0s"><span class="emoji" aria-hidden="true">📚</span>阅读</span>
+                    <span class="float-chip chip-2" style="--delay:1.2s"><span class="emoji" aria-hidden="true">⚽</span>足球</span>
+                    <span class="float-chip chip-3" style="--delay:2.4s"><span class="emoji" aria-hidden="true">🏃</span>跑步</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我 -->
+        <section class="section" id="about">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">关于我</p>
+                    <h2>一点点自我介绍</h2>
+                    <p>名字、身份、正在走的路，都在这里。</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-text reveal">
+                        <p>
+                            你好！我是<strong>王天瑞</strong>，一名热爱成长的学生，喜欢阅读和运动。
+                            对我来说，成长不是一件很大的事，而是每天做一点点小事的积累。
+                        </p>
+                        <p>
+                            读几页书，看一场球，跑一段路，或者把一行代码写得比昨天更清楚 ——
+                            这些看起来不起眼的时刻，慢慢拼成了现在的我。
+                        </p>
+                        <p>
+                            目前我在课堂上学习<strong>英语概要写作</strong>和<strong>基础网页编程</strong>。
+                            学写作让我学会把复杂的内容讲清楚，学编程让我有了把想法变成页面的能力，
+                            而这个主页，就是我的第一份练习。
+                        </p>
+                    </div>
+
+                    <dl class="info-card reveal" style="--delay:.1s">
+                        <div class="info-row"><dt>姓名</dt><dd>王天瑞</dd></div>
+                        <div class="info-row"><dt>现在的身份</dt><dd>学生</dd></div>
+                        <div class="info-row"><dt>正在学习</dt><dd>英语概要写作 / 网页编程</dd></div>
+                        <div class="info-row"><dt>喜欢的事</dt><dd>阅读文学、看足球、跑步</dd></div>
+                        <div class="info-row"><dt>邮箱</dt><dd><a href="mailto:azzdb123@qq.com">azzdb123@qq.com</a></dd></div>
+                    </dl>
+                </div>
+            </div>
+        </section>
+
+        <!-- 兴趣爱好 -->
+        <section class="section" id="interest">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">兴趣爱好</p>
+                    <h2>让我眼睛发亮的三件事</h2>
+                    <p>一件安静的、一件热闹的、一件流汗的。</p>
+                </div>
+
+                <div class="hobby-wrap">
+                    <article class="hobby-card reveal">
+                        <span class="hobby-num" aria-hidden="true">01</span>
+                        <span class="hobby-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"></path>
+                                <path d="M8.5 7h8"></path>
+                            </svg>
+                        </span>
+                        <h3>阅读文学书籍</h3>
+                        <p>在书本里感受不同的故事与思想，也借着别人的眼睛，看一遍自己没走过的生活。</p>
+                        <span class="tag">文学 · 故事</span>
+                    </article>
+
+                    <article class="hobby-card reveal" style="--delay:.08s">
+                        <span class="hobby-num" aria-hidden="true">02</span>
+                        <span class="hobby-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="m12 7.6 3.9 2.8-1.5 4.6H9.6L8.1 10.4 12 7.6Z"></path>
+                                <path d="M12 3v4.6M21 11.4l-4.6-.4M18.4 20l-3.9-5M5.6 20l3.9-5M3 11.4l4.6-.4"></path>
+                            </svg>
+                        </span>
+                        <h3>看足球比赛</h3>
+                        <p>享受赛场的激情与团队拼搏，也喜欢那些补时阶段还没放弃的瞬间。</p>
+                        <span class="tag">比赛 · 团队</span>
+                    </article>
+
+                    <article class="hobby-card reveal" style="--delay:.16s">
+                        <span class="hobby-num" aria-hidden="true">03</span>
+                        <span class="hobby-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="15.5" cy="4.6" r="1.9"></circle>
+                                <path d="M13.6 8.6 10.4 11l3.1 2.3 1.3 4.1"></path>
+                                <path d="M9.6 20.4 10.8 14 7.2 11.4 3.4 13"></path>
+                                <path d="M13.4 13.6l4.2 1.6 1.9 4.1"></path>
+                            </svg>
+                        </span>
+                        <h3>跑步</h3>
+                        <p>锻炼身体，放松自己。跑起来的时候，脑子里那些乱糟糟的线会慢慢理清楚。</p>
+                        <span class="tag">日常 · 耐力</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 正在学习 -->
+        <section class="section" id="study">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">正在学习</p>
+                    <h2>现在的课表与目标</h2>
+                    <p>两门课，一块屏幕，一点点变得更好。</p>
+                </div>
+
+                <div class="study-grid">
+                    <ul class="timeline reveal">
+                        <li>
+                            <h3>英语概要写作 <span class="badge">课程学习中</span></h3>
+                            <p>练习抓住文章的重点，用简洁、准确的语言复述作者的核心观点 —— 学会把长的东西讲短，把复杂的东西讲清楚。</p>
+                        </li>
+                        <li>
+                            <h3>基础网页编程 <span class="badge">课程学习中</span></h3>
+                            <p>从 HTML 的结构、CSS 的样式到 JavaScript 的交互，一步一步把想法做成能点开、能用的页面。</p>
+                        </li>
+                        <li>
+                            <h3>这个主页本身 <span class="badge">练习作品</span></h3>
+                            <p>不借助任何框架，只用原生三件套完成：响应式布局、深浅色主题、滚动动效，全部手写。</p>
+                        </li>
+                    </ul>
+
+                    <div class="link-card reveal" style="--delay:.1s">
+                        <h3>常逛的推荐网站</h3>
+                        <p>看教学视频、找灵感、学别人的页面是怎么做出来的。B 站是我最常打开的站点之一。</p>
+                        <a class="btn btn-primary" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">
+                            前往 B 站
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M14 4h6v6"></path><path d="M20 4 10.5 13.5"></path>
+                                <path d="M18 14.5V19a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6h5"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系方式 -->
+        <section class="section" id="contact">
+            <div class="container">
+                <div class="contact-card reveal">
+                    <div>
+                        <p class="eyebrow" style="color:rgba(255,255,255,.8)">联系方式</p>
+                        <h2>想聊聊？给我写信就好</h2>
+                        <p class="contact-lead">
+                            关于阅读、足球、跑步，或者网页上任何想改的地方，都欢迎来信。
+                            点一下按钮，邮箱地址会复制到剪贴板。
+                        </p>
+                        <p style="margin:26px 0 0">
+                            <button class="mail-btn" id="copyBtn" type="button">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="9" y="9" width="12" height="12" rx="2.5"></rect>
+                                    <path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span id="copyLabel">复制邮箱地址</span>
+                            </button>
+                        </p>
+                        <p class="mail-hint">azzdb123@qq.com · 通常几天内回复</p>
+                    </div>
+
+                    <div class="contact-side">
+                        <h3>我的信息</h3>
+                        <ul>
+                            <li><span>姓名</span><strong>王天瑞</strong></li>
+                            <li><span>邮箱</span><a href="mailto:azzdb123@qq.com">azzdb123@qq.com</a></li>
+                            <li><span>推荐</span><a href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">哔哩哔哩</a></li>
+                            <li><span>状态</span><strong>持续学习中</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>© <span id="year">2025</span> 王天瑞 · 用 HTML / CSS / JavaScript 手写完成</p>
+            <p><a href="#top">回到顶部 ↑</a></p>
+        </div>
+    </footer>
+
+    <button class="to-top" id="toTop" type="button" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5"></path><path d="m6 11 6-6 6 6"></path>
+        </svg>
+    </button>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var html = document.documentElement;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* ---------- 1. 深浅色主题 ---------- */
+            var STORE_KEY = 'wtr-homepage-theme';
+            var themeBtn = document.getElementById('themeToggle');
+            var themeMeta = document.querySelector('meta[name="theme-color"]');
+
+            function applyTheme(theme, persist) {
+                html.setAttribute('data-theme', theme);
+                var dark = theme === 'dark';
+                if (themeBtn) {
+                    themeBtn.setAttribute('aria-label', dark ? '切换到浅色模式' : '切换到深色模式');
+                    themeBtn.setAttribute('aria-pressed', String(dark));
+                }
+                if (themeMeta) themeMeta.setAttribute('content', dark ? '#0a1220' : '#f3f7fc');
+                if (persist) {
+                    try { localStorage.setItem(STORE_KEY, theme); } catch (e) { /* 忽略隐私模式限制 */ }
+                }
+            }
+
+            /* 主题已在 <head> 中提前确定，这里只同步按钮状态与浏览器主题色 */
+            applyTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light', false);
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function () {
+                    applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+                });
+            }
+
+            /* ---------- 2. 移动端菜单 ---------- */
+            var menuBtn = document.getElementById('menuBtn');
+            var nav = document.getElementById('nav');
+
+            function setMenu(open) {
+                if (!nav || !menuBtn) return;
+                nav.classList.toggle('open', open);
+                menuBtn.setAttribute('aria-expanded', String(open));
+                menuBtn.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+            }
+
+            if (menuBtn && nav) {
+                menuBtn.addEventListener('click', function () {
+                    setMenu(!nav.classList.contains('open'));
+                });
+                nav.addEventListener('click', function (event) {
+                    if (event.target.closest('a')) setMenu(false);
+                });
+                document.addEventListener('click', function (event) {
+                    if (!nav.classList.contains('open')) return;
+                    if (!nav.contains(event.target) && !menuBtn.contains(event.target)) setMenu(false);
+                });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') setMenu(false);
+                });
+            }
+
+            /* ---------- 3. 滚动：进度条 / 顶栏阴影 / 回到顶部 ---------- */
+            var header = document.getElementById('header');
+            var progress = document.getElementById('progress');
+            var toTop = document.getElementById('toTop');
+            var ticking = false;
+
+            function onScroll() {
+                var y = window.pageYOffset || document.documentElement.scrollTop;
+                if (header) header.classList.toggle('is-scrolled', y > 8);
+                if (toTop) toTop.classList.toggle('show', y > 480);
+
+                if (progress) {
+                    var max = document.documentElement.scrollHeight - window.innerHeight;
+                    var ratio = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+                    progress.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    ticking = true;
+                    window.requestAnimationFrame(onScroll);
+                }
+            }, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            onScroll();
+
+            if (toTop) {
+                toTop.addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+                });
+            }
+
+            /* ---------- 4. 导航高亮当前区块 ---------- */
+            var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav a[href^="#"]'));
+            var sections = navLinks.map(function (link) {
+                return document.querySelector(link.getAttribute('href'));
+            }).filter(Boolean);
+
+            function setActive(id) {
+                navLinks.forEach(function (link) {
+                    var on = link.getAttribute('href') === '#' + id;
+                    link.classList.toggle('active', on);
+                    if (on) link.setAttribute('aria-current', 'true');
+                    else link.removeAttribute('aria-current');
+                });
+            }
+
+            if ('IntersectionObserver' in window && sections.length) {
+                var spy = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) setActive(entry.target.id);
+                    });
+                }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+                sections.forEach(function (section) { spy.observe(section); });
+            }
+
+            /* ---------- 5. 滚动渐入 ---------- */
+            var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                reveals.forEach(function (el) { el.classList.add('is-visible'); });
+            } else {
+                var revealObserver = new IntersectionObserver(function (entries, observer) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+                reveals.forEach(function (el) { revealObserver.observe(el); });
+            }
+
+            /* ---------- 6. 打字机效果 ---------- */
+            var typedEl = document.getElementById('typed');
+            var phrases = [
+                '一名热爱成长的学生',
+                '在书页之间遇见更大的世界',
+                '球场与跑道上的行动派',
+                '正在学习网页编程的初学者'
+            ];
+
+            if (typedEl) {
+                if (reduceMotion) {
+                    typedEl.textContent = phrases[0];
+                } else {
+                    var phraseIndex = 0;
+                    var charIndex = 0;
+                    var deleting = false;
+
+                    var typeTick = function () {
+                        var word = phrases[phraseIndex];
+                        charIndex += deleting ? -1 : 1;
+                        typedEl.textContent = word.slice(0, charIndex);
+
+                        var delay = deleting ? 45 : 95;
+                        if (!deleting && charIndex === word.length) {
+                            deleting = true;
+                            delay = 1800;
+                        } else if (deleting && charIndex === 0) {
+                            deleting = false;
+                            phraseIndex = (phraseIndex + 1) % phrases.length;
+                            delay = 420;
+                        }
+                        window.setTimeout(typeTick, delay);
+                    };
+                    typedEl.textContent = '';
+                    window.setTimeout(typeTick, 600);
+                }
+            }
+
+            /* ---------- 7. 复制邮箱 ---------- */
+            var EMAIL = 'azzdb123@qq.com';
+            var copyBtn = document.getElementById('copyBtn');
+            var copyLabel = document.getElementById('copyLabel');
+            var toast = document.getElementById('toast');
+            var toastTimer = null;
+            var labelTimer = null;
+
+            function showToast(message) {
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('show');
+                window.clearTimeout(toastTimer);
+                toastTimer = window.setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 2400);
+            }
+
+            function fallbackCopy(text) {
+                var area = document.createElement('textarea');
+                area.value = text;
+                area.setAttribute('readonly', '');
+                area.style.position = 'fixed';
+                area.style.top = '-1000px';
+                area.style.opacity = '0';
+                document.body.appendChild(area);
+                area.select();
+                var ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(area);
+                return ok;
+            }
+
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function () {
+                    var done = function () {
+                        showToast('邮箱已复制：' + EMAIL);
+                        if (copyLabel) {
+                            copyLabel.textContent = '已复制 ✓';
+                            window.clearTimeout(labelTimer);
+                            labelTimer = window.setTimeout(function () {
+                                copyLabel.textContent = '复制邮箱地址';
+                            }, 2400);
+                        }
+                    };
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(EMAIL).then(done).catch(function () {
+                            if (fallbackCopy(EMAIL)) done();
+                            else showToast('复制失败，请手动选择：' + EMAIL);
+                        });
+                    } else if (fallbackCopy(EMAIL)) {
+                        done();
+                    } else {
+                        showToast('复制失败，请手动选择：' + EMAIL);
+                    }
+                });
+            }
+
+            /* ---------- 8. 页脚年份 ---------- */
+            var yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+        })();
+    </script>
 </body>
 </html>
