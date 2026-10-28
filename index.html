@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="王天瑞的个人主页 —— 一名热爱成长的学生，喜欢阅读文学、看足球、跑步，正在学习英语概要写作与网页编程。">
+    <meta name="description" content="王天瑞的个人主页 —— 一名来自安徽阜阳、热爱成长的学生，喜欢阅读文学、看足球、跑步，正在学习英语概要写作与网页编程。">
     <meta name="theme-color" content="#f3f7fc">
     <title>王天瑞 · 个人主页</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b5fa5'/%3E%3Ctext x='32' y='45' font-size='35' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E">
     <script>
         /* 尽早确定主题与 js 标记，避免首帧闪烁 */
         (function () {
@@ -21,32 +22,39 @@
             if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a1220' : '#f3f7fc');
         })();
     </script>
+    <noscript>
+        <style>
+            .acc-panel { grid-template-rows: 1fr !important; }
+            .acc-btn { cursor: default; }
+            .acc-icon, .explore-head .text-btn { display: none; }
+        </style>
+    </noscript>
     <style>
         /* ============ 1. 设计变量 ============ */
         :root {
             --primary: #0b5fa5;
             --primary-2: #0e7fc4;
             --primary-rgb: 11, 95, 165;
-            --accent: #0fa89a;
-            --accent-rgb: 15, 168, 154;
+            --accent: #0a766c;
+            --accent-rgb: 10, 118, 108;
 
             --bg: #f3f7fc;
             --surface: #ffffff;
             --surface-2: #f6fafd;
             --text: #15283c;
-            --muted: #5a6f85;
+            --muted: #5b7087;
             --border: #dde7f1;
 
-            --shadow-sm: 0 1px 2px rgba(16, 42, 67, .06), 0 2px 10px rgba(16, 42, 67, .05);
-            --shadow-md: 0 14px 34px rgba(16, 42, 67, .10);
-            --shadow-lg: 0 30px 70px rgba(16, 42, 67, .16);
+            --shadow-sm: 0 1px 2px rgba(16, 42, 67, .05), 0 4px 14px rgba(16, 42, 67, .05);
+            --shadow-md: 0 16px 40px rgba(16, 42, 67, .10);
+            --shadow-lg: 0 30px 70px rgba(16, 42, 67, .15);
 
             --radius: 18px;
             --radius-lg: 28px;
-            --maxw: 1120px;
-            --header-h: 72px;
+            --maxw: 1140px;
+            --header-h: 76px;
+            --section-y: clamp(56px, 6.6vw, 86px);
             --ease: cubic-bezier(.22, .61, .36, 1);
-            --delay: 0s;
             color-scheme: light;
         }
 
@@ -75,7 +83,7 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: calc(var(--header-h) + 20px);
+            scroll-padding-top: calc(var(--header-h) + 24px);
             -webkit-text-size-adjust: 100%;
         }
 
@@ -84,24 +92,26 @@
             font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
                          "Source Han Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
             font-size: 16px;
-            line-height: 1.75;
+            line-height: 1.78;
             color: var(--text);
             background:
-                radial-gradient(1100px 520px at 8% -10%, rgba(var(--primary-rgb), .14), transparent 62%),
-                radial-gradient(900px 500px at 100% 2%, rgba(var(--accent-rgb), .12), transparent 58%),
+                radial-gradient(1000px 520px at 6% -8%, rgba(var(--primary-rgb), .13), transparent 62%),
+                radial-gradient(820px 480px at 100% 0%, rgba(var(--accent-rgb), .11), transparent 58%),
                 var(--bg);
             background-attachment: fixed;
             transition: background-color .35s ease, color .35s ease;
         }
 
+        p { text-wrap: pretty; }
         img { max-width: 100%; height: auto; }
         a { color: var(--primary); }
+        button { font: inherit; }
 
-        h1, h2, h3 { line-height: 1.25; letter-spacing: -.01em; }
+        h1, h2, h3, h4 { line-height: 1.25; letter-spacing: -.01em; }
         h1, h2 { text-wrap: balance; }
 
         :focus-visible {
-            outline: 3px solid rgba(var(--primary-rgb), .45);
+            outline: 3px solid var(--primary);
             outline-offset: 3px;
             border-radius: 10px;
         }
@@ -133,16 +143,16 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, .78);
+            background: rgba(255, 255, 255, .80);
             -webkit-backdrop-filter: saturate(180%) blur(14px);
             backdrop-filter: saturate(180%) blur(14px);
             border-bottom: 1px solid transparent;
             transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
         }
-        [data-theme="dark"] .site-header { background: rgba(10, 18, 32, .72); }
+        [data-theme="dark"] .site-header { background: rgba(10, 18, 32, .74); }
         .site-header.is-scrolled {
             border-bottom-color: var(--border);
-            box-shadow: 0 6px 24px rgba(16, 42, 67, .06);
+            box-shadow: 0 8px 30px rgba(16, 42, 67, .06);
         }
 
         .progress {
@@ -162,7 +172,7 @@
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
             height: var(--header-h);
         }
         .brand { justify-self: start; }
@@ -172,7 +182,7 @@
         .brand {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 11px;
             text-decoration: none;
             color: var(--text);
             font-weight: 700;
@@ -180,18 +190,18 @@
         .brand-mark {
             display: grid;
             place-items: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 13px;
             background: linear-gradient(140deg, var(--primary), var(--accent));
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1.12rem;
             letter-spacing: 0;
             box-shadow: 0 8px 18px rgba(var(--primary-rgb), .28);
         }
-        .brand-text { display: flex; flex-direction: column; line-height: 1.15; font-size: .98rem; }
+        .brand-text { display: flex; flex-direction: column; line-height: 1.16; font-size: .98rem; }
         .brand-text small {
-            font-size: .68rem;
+            font-size: .66rem;
             font-weight: 500;
             letter-spacing: .18em;
             text-transform: uppercase;
@@ -201,15 +211,16 @@
         .nav {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
         .nav a {
-            padding: 9px 15px;
+            padding: 9px 13px;
             border-radius: 999px;
             color: var(--muted);
-            font-size: .95rem;
+            font-size: .94rem;
             font-weight: 600;
             text-decoration: none;
+            white-space: nowrap;
             transition: color .2s ease, background .2s ease;
         }
         .nav a:hover { color: var(--primary); background: var(--surface-2); }
@@ -240,12 +251,10 @@
         }
         .icon-btn svg { width: 19px; height: 19px; }
 
-        /* 主题图标切换 */
         .icon-moon { display: none; }
         [data-theme="dark"] .icon-sun { display: none; }
         [data-theme="dark"] .icon-moon { display: block; }
 
-        /* 移动端菜单按钮 */
         .menu-btn { display: none; }
         .menu-btn .bars { position: relative; width: 18px; height: 12px; }
         .menu-btn .bars span {
@@ -267,13 +276,13 @@
         /* ============ 4. 首屏 ============ */
         .hero {
             position: relative;
-            padding: clamp(36px, 6vw, 76px) 0 clamp(48px, 7vw, 88px);
+            padding: clamp(40px, 5.5vw, 68px) 0 clamp(52px, 6.4vw, 84px);
             overflow: hidden;
         }
         .hero-grid {
             display: grid;
             grid-template-columns: minmax(0, 1.05fr) minmax(0, .85fr);
-            gap: clamp(28px, 5vw, 64px);
+            gap: clamp(34px, 5vw, 68px);
             align-items: center;
         }
 
@@ -281,8 +290,8 @@
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            margin: 0 0 14px;
-            padding: 7px 16px 7px 12px;
+            margin: 0 0 16px;
+            padding: 7px 15px 7px 12px;
             border: 1px solid var(--border);
             border-radius: 999px;
             background: var(--surface);
@@ -301,7 +310,7 @@
 
         h1 {
             margin: 0;
-            font-size: clamp(2.6rem, 6.4vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 3.9rem);
             font-weight: 800;
             letter-spacing: -.03em;
         }
@@ -312,9 +321,9 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 2px;
-            min-height: 2.2em;
-            margin: 12px 0 0;
-            font-size: clamp(1.02rem, 2.2vw, 1.3rem);
+            min-height: 2em;
+            margin: 14px 0 0;
+            font-size: clamp(1.05rem, 2.1vw, 1.25rem);
             font-weight: 700;
             color: var(--primary);
         }
@@ -329,10 +338,11 @@
         }
 
         .lead {
-            max-width: 46ch;
-            margin: 18px 0 0;
+            max-width: 47ch;
+            margin: 20px 0 0;
             color: var(--muted);
-            font-size: 1.02rem;
+            font-size: 1.03rem;
+            line-height: 1.85;
         }
         .lead strong { color: var(--text); font-weight: 700; }
 
@@ -340,7 +350,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         .btn {
@@ -385,8 +395,8 @@
         .fact-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px 30px;
-            margin: 32px 0 0;
+            gap: 14px 26px;
+            margin: 36px 0 0;
             padding: 0;
             list-style: none;
         }
@@ -394,22 +404,21 @@
             display: flex;
             flex-direction: column;
             gap: 1px;
-            padding-left: 15px;
+            padding-left: 14px;
             border-left: 2px solid rgba(var(--primary-rgb), .3);
         }
-        .fact-row strong { font-size: .95rem; font-weight: 700; }
+        .fact-row strong { font-size: .94rem; font-weight: 700; }
         .fact-row span {
-            font-size: .76rem;
+            font-size: .75rem;
             letter-spacing: .08em;
             color: var(--muted);
         }
 
-        /* 头像 */
         .hero-visual {
             position: relative;
             justify-self: center;
-            width: min(100%, 400px);
-            padding: 16px;
+            width: min(100%, 390px);
+            padding: 14px;
         }
         .photo-frame {
             position: relative;
@@ -465,16 +474,30 @@
         .chip-3 { bottom: 9%; left: 0; }
 
         /* ============ 5. 通用区块 ============ */
-        .section { padding: clamp(50px, 7vw, 88px) 0; }
+        .section { padding: var(--section-y) 0; }
 
-        .section-head { max-width: 640px; margin-bottom: clamp(28px, 4vw, 42px); }
+        .section-tint {
+            position: relative;
+            background: linear-gradient(180deg,
+                rgba(var(--primary-rgb), .055),
+                rgba(var(--accent-rgb), .05));
+            border-block: 1px solid rgba(var(--primary-rgb), .10);
+        }
+        [data-theme="dark"] .section-tint {
+            background: linear-gradient(180deg,
+                rgba(var(--primary-rgb), .06),
+                rgba(var(--accent-rgb), .05));
+            border-color: rgba(255, 255, 255, .06);
+        }
+
+        .section-head { max-width: 660px; margin-bottom: clamp(28px, 4vw, 44px); }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            margin: 0 0 12px;
-            font-size: .78rem;
+            margin: 0 0 10px;
+            font-size: .76rem;
             font-weight: 800;
             letter-spacing: .18em;
             text-transform: uppercase;
@@ -489,21 +512,22 @@
         }
 
         h2 {
-            margin: 0 0 12px;
-            font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+            margin: 0 0 10px;
+            font-size: clamp(1.7rem, 3.2vw, 2.2rem);
             font-weight: 800;
         }
 
-        .section-head p { margin: 0; color: var(--muted); }
+        .section-head p { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
         /* ============ 6. 关于我 ============ */
         .about-grid {
             display: grid;
-            grid-template-columns: 1.12fr .88fr;
-            gap: clamp(24px, 4vw, 48px);
+            grid-template-columns: 1.08fr .92fr;
+            gap: clamp(28px, 4.6vw, 60px);
             align-items: start;
         }
-        .about-text p { margin: 0 0 16px; color: var(--muted); }
+        .about-text p { margin: 0 0 18px; color: var(--muted); }
+        .about-text p:last-child { margin-bottom: 0; }
         .about-text p strong { color: var(--text); }
 
         .info-card {
@@ -511,14 +535,15 @@
             border-radius: var(--radius);
             background: var(--surface);
             box-shadow: var(--shadow-sm);
-            padding: 8px 24px;
+            padding: 6px 26px;
+            margin: 0;
         }
         .info-row {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             gap: 16px;
-            padding: 15px 0;
+            padding: 16px 0;
             border-bottom: 1px dashed var(--border);
         }
         .info-row:last-child { border-bottom: 0; }
@@ -534,19 +559,226 @@
             text-align: right;
         }
         .info-row dd a { text-decoration: none; }
-        .info-row dd a:hover { text-decoration: underline; }
+        .info-row dd a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        /* ============ 7. 兴趣爱好 ============ */
+        /* ============ 7. 家乡 · 阜阳 ============ */
+        .hometown-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr);
+            gap: clamp(28px, 4.5vw, 60px);
+            align-items: start;
+        }
+        .hometown-copy p { margin: 0 0 18px; color: var(--muted); }
+        .hometown-copy .hometown-lead {
+            margin-bottom: 20px;
+            color: var(--text);
+            font-size: clamp(1.08rem, 1.5vw, 1.2rem);
+            line-height: 1.9;
+        }
+        .hometown-lead strong { color: var(--primary); }
+
+        .hometown-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 22px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+        .hometown-tags li {
+            padding: 6px 13px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+        }
+
+        .quote-card {
+            margin: 28px 0 0;
+            padding: 2px 0 2px 18px;
+            border-left: 2px solid var(--accent);
+        }
+        .quote-card p {
+            margin: 0;
+            font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+            font-size: 1.06rem;
+            line-height: 1.75;
+            color: var(--text);
+        }
+        .quote-card cite {
+            display: block;
+            margin-top: 6px;
+            font-style: normal;
+            font-size: .78rem;
+            letter-spacing: .04em;
+            color: var(--muted);
+        }
+
+        .place-card {
+            position: sticky;
+            top: calc(var(--header-h) + 28px);
+            padding: clamp(22px, 3vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            box-shadow: var(--shadow-md);
+        }
+        .place-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+        .place-mark {
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: linear-gradient(140deg, var(--primary), var(--accent));
+            color: #fff;
+            font-size: 1.45rem;
+            font-weight: 800;
+            box-shadow: 0 10px 22px rgba(var(--primary-rgb), .24);
+        }
+        .place-head h3 { margin: 0; font-size: 1.02rem; }
+        .place-head p {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: .72rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .place-rows { margin: 0; padding: 6px 0 0; }
+        .place-rows > div {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .place-rows > div:last-child { padding-bottom: 0; border-bottom: 0; }
+        .place-rows dt { flex: 0 0 auto; color: var(--muted); font-size: .82rem; }
+        .place-rows dd {
+            margin: 0;
+            text-align: right;
+            font-size: .88rem;
+            font-weight: 600;
+            line-height: 1.65;
+        }
+
+        .explore {
+            margin-top: clamp(34px, 5vw, 54px);
+            padding-top: clamp(24px, 3.4vw, 34px);
+            border-top: 1px solid rgba(var(--primary-rgb), .12);
+        }
+        .explore-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .explore-head h3 { margin: 0; font-size: 1.02rem; }
+        .explore-head p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
+        .text-btn {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 6px 0;
+            border: 0;
+            background: none;
+            color: var(--primary);
+            font-size: .86rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .text-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+        .acc-item + .acc-item { border-top: 1px solid var(--border); }
+        .acc-h { margin: 0; font-size: 1rem; }
+        .acc-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 18px clamp(18px, 2.6vw, 26px);
+            border: 0;
+            background: transparent;
+            color: var(--text);
+            text-align: left;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+        .acc-btn:hover { background: var(--surface-2); }
+        .acc-item.open .acc-btn { background: var(--surface-2); }
+        .acc-btn:focus-visible { outline-offset: -3px; }
+        .acc-index {
+            flex: 0 0 auto;
+            color: var(--accent);
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+        .acc-title { flex: 1; font-weight: 700; }
+        .acc-icon { position: relative; flex: 0 0 auto; width: 16px; height: 16px; }
+        .acc-icon::before {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            width: 7px;
+            height: 7px;
+            border-right: 2px solid var(--muted);
+            border-bottom: 2px solid var(--muted);
+            border-radius: 1px;
+            transform: rotate(45deg);
+            transition: transform .32s var(--ease), border-color .2s ease;
+        }
+        .acc-item.open .acc-icon::before {
+            transform: rotate(-135deg);
+            border-color: var(--primary);
+        }
+        .acc-panel {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .4s var(--ease);
+        }
+        .acc-item.open .acc-panel { grid-template-rows: 1fr; }
+        .acc-inner { overflow: hidden; }
+        .acc-inner p {
+            max-width: 76ch;
+            margin: 0;
+            padding: 0 clamp(18px, 2.6vw, 26px) 20px calc(clamp(18px, 2.6vw, 26px) + 34px);
+            color: var(--muted);
+            font-size: .95rem;
+            line-height: 1.9;
+        }
+
+        /* ============ 8. 兴趣爱好 ============ */
         .hobby-wrap {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: clamp(16px, 2.2vw, 24px);
         }
         .hobby-card {
             position: relative;
             display: flex;
             flex-direction: column;
-            padding: 28px 26px 26px;
+            padding: clamp(24px, 3vw, 32px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--surface);
@@ -575,9 +807,9 @@
         .hobby-icon {
             display: grid;
             place-items: center;
-            width: 52px;
-            height: 52px;
-            margin-bottom: 18px;
+            width: 54px;
+            height: 54px;
+            margin-bottom: 20px;
             border-radius: 15px;
             background: linear-gradient(140deg, rgba(var(--primary-rgb), .14), rgba(var(--accent-rgb), .14));
             color: var(--primary);
@@ -595,8 +827,8 @@
             opacity: .55;
         }
 
-        .hobby-card h3 { margin: 0 0 8px; font-size: 1.08rem; }
-        .hobby-card p { margin: 0 0 18px; color: var(--muted); font-size: .94rem; }
+        .hobby-card h3 { margin: 0 0 8px; font-size: 1.09rem; }
+        .hobby-card p { margin: 0 0 20px; color: var(--muted); font-size: .94rem; line-height: 1.8; }
 
         .tag {
             align-self: flex-start;
@@ -609,14 +841,13 @@
             font-weight: 700;
             letter-spacing: .04em;
         }
-        [data-theme="dark"] .tag { color: var(--accent); }
 
-        /* ============ 8. 正在学习 ============ */
+        /* ============ 9. 正在学习 ============ */
         .study-grid {
             display: grid;
-            grid-template-columns: 1.1fr .9fr;
-            gap: clamp(24px, 4vw, 48px);
-            align-items: start;
+            grid-template-columns: 1.08fr .92fr;
+            gap: clamp(28px, 4.5vw, 60px);
+            align-items: stretch;
         }
 
         .timeline {
@@ -628,7 +859,7 @@
         .timeline::before {
             content: "";
             position: absolute;
-            left: 8px;
+            left: 9px;
             top: 10px;
             bottom: 14px;
             width: 2px;
@@ -638,7 +869,7 @@
         }
         .timeline li {
             position: relative;
-            padding: 0 0 28px 38px;
+            padding: 0 0 30px 40px;
         }
         .timeline li:last-child { padding-bottom: 0; }
         .timeline li::before {
@@ -646,8 +877,8 @@
             position: absolute;
             left: 0;
             top: 7px;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 3px solid var(--primary);
             background: var(--surface);
@@ -659,9 +890,9 @@
             align-items: center;
             gap: 10px;
             margin: 0 0 6px;
-            font-size: 1.05rem;
+            font-size: 1.06rem;
         }
-        .timeline p { margin: 0; color: var(--muted); font-size: .94rem; }
+        .timeline p { margin: 0; color: var(--muted); font-size: .94rem; line-height: 1.85; }
 
         .badge {
             padding: 3px 10px;
@@ -675,8 +906,10 @@
 
         .link-card {
             position: relative;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            padding: 30px 28px;
+            padding: clamp(26px, 3vw, 34px);
             border-radius: var(--radius);
             background: linear-gradient(150deg,
                 rgba(var(--primary-rgb), .10),
@@ -694,17 +927,18 @@
             border: 1px solid rgba(var(--primary-rgb), .18);
         }
         .link-card h3 { margin: 0 0 8px; font-size: 1.05rem; }
-        .link-card p { margin: 0 0 20px; color: var(--muted); font-size: .94rem; }
+        .link-card p { margin: 0 0 22px; color: var(--muted); font-size: .94rem; line-height: 1.85; }
+        .link-card .btn { margin-top: auto; align-self: flex-start; }
 
-        /* ============ 9. 联系方式 ============ */
+        /* ============ 10. 联系方式 ============ */
         .contact-card {
             position: relative;
             overflow: hidden;
             display: grid;
-            grid-template-columns: 1.15fr .85fr;
-            gap: 30px;
+            grid-template-columns: 1.12fr .88fr;
+            gap: clamp(28px, 4vw, 48px);
             align-items: center;
-            padding: clamp(28px, 5vw, 52px);
+            padding: clamp(32px, 5vw, 56px);
             border-radius: var(--radius-lg);
             background: linear-gradient(135deg, #0b4f8a 0%, #0b5fa5 45%, #0a8f88 100%);
             color: #fff;
@@ -724,10 +958,12 @@
         .contact-card h2 { margin: 0 0 10px; color: #fff; }
         .contact-card .contact-lead {
             margin: 0;
-            max-width: 40ch;
+            max-width: 42ch;
             color: rgba(255, 255, 255, .82);
-            font-size: .98rem;
+            font-size: 1rem;
+            line-height: 1.8;
         }
+        .contact-card :focus-visible { outline-color: rgba(255, 255, 255, .8); }
         .mail-btn {
             display: inline-flex;
             align-items: center;
@@ -737,7 +973,6 @@
             border-radius: 999px;
             background: #fff;
             color: #0b4f8a;
-            font-family: inherit;
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
@@ -754,8 +989,8 @@
         .contact-side {
             justify-self: end;
             width: 100%;
-            max-width: 280px;
-            padding: 18px 20px;
+            max-width: 300px;
+            padding: 20px 22px;
             border: 1px solid rgba(255, 255, 255, .25);
             border-radius: 16px;
             background: rgba(255, 255, 255, .10);
@@ -781,9 +1016,9 @@
         .contact-side li:last-child { border-bottom: 0; }
         .contact-side li span { color: rgba(255, 255, 255, .7); }
         .contact-side a { color: #fff; text-decoration: none; }
-        .contact-side a:hover { text-decoration: underline; }
+        .contact-side a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        /* ============ 10. 页脚 / 工具 ============ */
+        /* ============ 11. 页脚 / 工具 ============ */
         .site-footer {
             padding: 30px 0 34px;
             border-top: 1px solid var(--border);
@@ -845,7 +1080,7 @@
         }
         .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-        /* ============ 11. 动效 ============ */
+        /* ============ 12. 动效 ============ */
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -855,24 +1090,30 @@
 
         .js .reveal {
             opacity: 0;
-            transform: translateY(22px);
+            transform: translateY(18px);
             transition: opacity .7s var(--ease), transform .7s var(--ease);
             transition-delay: var(--delay, 0s);
         }
         .js .reveal.is-visible { opacity: 1; transform: none; }
 
-        /* ============ 12. 响应式 ============ */
+        /* ============ 13. 响应式 ============ */
         @media (max-width: 960px) {
-            .hero-grid, .about-grid, .study-grid { grid-template-columns: 1fr; }
-            .hero-visual { order: -1; width: min(100%, 340px); padding: 8px; }
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-copy { width: 100%; max-width: 640px; margin-inline: auto; }
+            .hero-visual { order: -1; width: min(100%, 330px); padding: 8px; margin-bottom: 4px; }
             .float-chip { font-size: .78rem; padding: 7px 12px; }
             .chip-1 { left: -2%; }
             .chip-2 { right: -2%; }
+        }
+
+        @media (max-width: 820px) {
+            .about-grid, .study-grid, .hometown-grid { grid-template-columns: 1fr; }
+            .place-card { position: static; }
             .contact-card { grid-template-columns: 1fr; }
             .contact-side { justify-self: stretch; max-width: none; }
         }
 
-        @media (max-width: 860px) {
+        @media (max-width: 880px) {
             .container { width: min(var(--maxw), calc(100% - 36px)); }
             .menu-btn { display: inline-grid; }
             .brand-text small { display: none; }
@@ -880,43 +1121,80 @@
             .header-inner { grid-template-columns: 1fr auto; }
 
             .nav {
+                position: absolute;
+                top: calc(var(--header-h) - 4px);
+                left: 12px;
+                right: 12px;
                 grid-column: 1 / -1;
                 grid-row: 1;
                 justify-self: stretch;
-                width: 100%;
-                position: absolute;
-                top: var(--header-h);
-                left: 0;
-                right: 0;
+                width: auto;
+                max-height: calc(100vh - var(--header-h) - 22px);
+                overflow-y: auto;
                 flex-direction: column;
                 align-items: stretch;
                 gap: 2px;
-                padding: 10px 14px 16px;
-                border-bottom: 1px solid var(--border);
-                border-radius: 0 0 20px 20px;
+                padding: 10px 10px 12px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
                 background: var(--surface);
-                box-shadow: var(--shadow-md);
+                box-shadow: var(--shadow-lg);
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(-10px);
-                transition: opacity .25s ease, transform .25s var(--ease), visibility .25s;
+                transform: translateY(-10px) scale(.985);
+                transform-origin: top center;
+                transition: opacity .24s ease, transform .28s var(--ease), visibility .28s;
             }
-            .nav.open { opacity: 1; visibility: visible; transform: none; }
-            .nav a { padding: 13px 16px; border-radius: 12px; font-size: 1rem; }
+            .nav.open {
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+            .nav a {
+                padding: 13px 16px;
+                border-radius: 12px;
+                font-size: 1rem;
+                opacity: 0;
+                transform: translateY(-6px);
+                transition: opacity .3s ease, transform .3s var(--ease),
+                            color .2s ease, background .2s ease;
+            }
+            .nav.open a { opacity: 1; transform: none; }
+            .nav.open a:nth-child(1) { transition-delay: .04s; }
+            .nav.open a:nth-child(2) { transition-delay: .07s; }
+            .nav.open a:nth-child(3) { transition-delay: .10s; }
+            .nav.open a:nth-child(4) { transition-delay: .13s; }
+            .nav.open a:nth-child(5) { transition-delay: .16s; }
         }
 
         @media (max-width: 560px) {
+            :root { --header-h: 68px; }
             body { background-attachment: scroll; }
+            .container { width: calc(100% - 32px); }
+            .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
+            .icon-btn { width: 40px; height: 40px; }
+            .hero { padding-top: 30px; }
             .hero-visual { width: min(84%, 300px); padding: 4px; }
-            .fact-row { gap: 12px 20px; }
+            .fact-row { gap: 14px 20px; }
             .hero-actions .btn { flex: 1 1 auto; }
-            .info-card { padding: 6px 18px; }
-            .info-row { flex-direction: column; gap: 2px; }
-            .info-row dd { text-align: left; }
-            .contact-card { padding: 26px 22px; }
+            .info-card { padding: 4px 18px; }
+            .info-row { padding: 14px 0; }
+            .hometown-tags { margin-top: 20px; gap: 7px; }
+            .hometown-tags li { padding: 6px 11px; }
+            .explore-head { align-items: flex-start; }
+            .acc-inner p { padding-left: clamp(18px, 2.6vw, 26px); }
+            .contact-card { padding: 28px 22px; }
             .mail-btn { width: 100%; justify-content: center; font-size: .95rem; }
             .footer-inner { justify-content: center; text-align: center; }
             .to-top { right: 16px; bottom: 16px; }
+        }
+
+        @media (max-width: 440px) {
+            .fact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+        }
+
+        @media (max-width: 350px) {
+            .fact-row { grid-template-columns: 1fr; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -946,6 +1224,7 @@
 
             <nav class="nav" id="nav" aria-label="主导航">
                 <a href="#about">关于我</a>
+                <a href="#hometown">家乡</a>
                 <a href="#interest">兴趣爱好</a>
                 <a href="#study">正在学习</a>
                 <a href="#contact">联系方式</a>
@@ -976,11 +1255,11 @@
                 <div class="hero-copy reveal">
                     <p class="eyebrow-chip"><span class="dot" aria-hidden="true"></span>你好，我是</p>
                     <h1>王天瑞<span class="h1-dot">.</span></h1>
-                    <p class="typed-line" aria-label="一名热爱成长的学生">
+                    <p class="typed-line" aria-label="一名来自安徽阜阳、热爱成长的学生">
                         <span id="typed">一名热爱成长的学生</span><span class="caret" aria-hidden="true"></span>
                     </p>
                     <p class="lead">
-                        我喜欢阅读和运动，也正在学习英语概要写作与网页编程。
+                        我来自<strong>安徽阜阳</strong>，喜欢阅读和运动，也正在学习英语概要写作与网页编程。
                         这个页面是我用 <strong>HTML、CSS 和 JavaScript</strong> 一行行搭起来的，
                         用来记录我正在做的事、喜欢的事，以及还想去尝试的事。
                     </p>
@@ -1000,6 +1279,7 @@
                     </div>
                     <ul class="fact-row">
                         <li><strong>学生</strong><span>现在的身份</span></li>
+                        <li><strong>安徽 · 阜阳</strong><span>我的家乡</span></li>
                         <li><strong>阅读 · 足球 · 跑步</strong><span>喜欢的事</span></li>
                         <li><strong>持续学习中</strong><span>正在做的事</span></li>
                     </ul>
@@ -1044,11 +1324,137 @@
 
                     <dl class="info-card reveal" style="--delay:.1s">
                         <div class="info-row"><dt>姓名</dt><dd>王天瑞</dd></div>
+                        <div class="info-row"><dt>家乡</dt><dd><a href="#hometown">安徽 · 阜阳</a></dd></div>
                         <div class="info-row"><dt>现在的身份</dt><dd>学生</dd></div>
                         <div class="info-row"><dt>正在学习</dt><dd>英语概要写作 / 网页编程</dd></div>
                         <div class="info-row"><dt>喜欢的事</dt><dd>阅读文学、看足球、跑步</dd></div>
                         <div class="info-row"><dt>邮箱</dt><dd><a href="mailto:azzdb123@qq.com">azzdb123@qq.com</a></dd></div>
                     </dl>
+                </div>
+            </div>
+        </section>
+
+        <!-- 家乡 -->
+        <section class="section section-tint" id="hometown">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">家乡 · 阜阳</p>
+                    <h2>我的家乡，安徽阜阳</h2>
+                    <p>一座在淮河边、把日子过得很实在的城市。</p>
+                </div>
+
+                <div class="hometown-grid">
+                    <div class="hometown-copy reveal">
+                        <p class="hometown-lead">
+                            阜阳在<strong>安徽省西北部</strong>，古称<strong>颍州</strong>，淮河从南边流过，
+                            颍河与泉河在城中交汇。这里没有高山，是一望无际的平原，
+                            也是一座安静、踏实、有人情味的皖北城市。
+                        </p>
+                        <p>
+                            我在这里长大。春天看麦田返青，夏天在河边吹风，
+                            早上喝一碗撒汤、吃一根格拉条，是再普通不过的日常。
+                            日子久了才发现，家乡原来是由这些很小的东西组成的：
+                            口音、早餐摊、傍晚的风，还有总也绕不开的那几条老街。
+                        </p>
+
+                        <ul class="hometown-tags" aria-label="阜阳关键词">
+                            <li>淮河之滨</li>
+                            <li>颍州古城</li>
+                            <li>平原粮仓</li>
+                            <li>管仲故里</li>
+                        </ul>
+
+                        <blockquote class="quote-card">
+                            <p>“大千起灭一尘里，未觉杭颍谁雌雄。”</p>
+                            <cite>苏轼 · 咏颍州西湖</cite>
+                        </blockquote>
+                    </div>
+
+                    <aside class="place-card reveal" style="--delay:.08s" aria-label="阜阳小档案">
+                        <div class="place-head">
+                            <span class="place-mark" aria-hidden="true">阜</span>
+                            <div>
+                                <h3>阜阳小档案</h3>
+                                <p>Fuyang · Anhui</p>
+                            </div>
+                        </div>
+                        <dl class="place-rows">
+                            <div><dt>位置</dt><dd>安徽省西北部 · 淮河北岸</dd></div>
+                            <div><dt>古称</dt><dd>颍州 / 汝阴 / 顺昌</dd></div>
+                            <div><dt>水系</dt><dd>淮河 · 颍河 · 泉河</dd></div>
+                            <div><dt>风物</dt><dd>颍州西湖 · 剪纸 · 花鼓灯</dd></div>
+                            <div><dt>味道</dt><dd>格拉条 · 枕头馍 · 撒汤</dd></div>
+                        </dl>
+                    </aside>
+                </div>
+
+                <div class="explore reveal">
+                    <div class="explore-head">
+                        <div>
+                            <h3>想多了解一点？</h3>
+                            <p>三个小切面，点开看看。</p>
+                        </div>
+                        <button class="text-btn" id="toggleAll" type="button" aria-expanded="false" aria-controls="hometownAccordion">全部展开</button>
+                    </div>
+
+                    <div class="accordion" id="hometownAccordion">
+                        <div class="acc-item open">
+                            <h4 class="acc-h">
+                                <button class="acc-btn" id="acc-btn-1" type="button" aria-expanded="true" aria-controls="acc-panel-1">
+                                    <span class="acc-index" aria-hidden="true">01</span>
+                                    <span class="acc-title">地理与城市</span>
+                                    <span class="acc-icon" aria-hidden="true"></span>
+                                </button>
+                            </h4>
+                            <div class="acc-panel" id="acc-panel-1" role="region" aria-labelledby="acc-btn-1">
+                                <div class="acc-inner">
+                                    <p>
+                                        阜阳地处黄淮平原南端，地势平坦开阔，是安徽的人口大市。
+                                        淮河、颍河、泉河从这里经过，让这座北方气质的城市多了几分水汽。
+                                        城西的颍州西湖在历史上曾与杭州西湖齐名，欧阳修、苏轼都曾为它写诗。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="acc-item">
+                            <h4 class="acc-h">
+                                <button class="acc-btn" id="acc-btn-2" type="button" aria-expanded="false" aria-controls="acc-panel-2">
+                                    <span class="acc-index" aria-hidden="true">02</span>
+                                    <span class="acc-title">人文与风物</span>
+                                    <span class="acc-icon" aria-hidden="true"></span>
+                                </button>
+                            </h4>
+                            <div class="acc-panel" id="acc-panel-2" role="region" aria-labelledby="acc-btn-2">
+                                <div class="acc-inner">
+                                    <p>
+                                        阜阳古称颍州，是管仲的故里。欧阳修、苏轼先后在此任职，把这座小城写进了诗文。
+                                        民间还有阜阳剪纸、颍上花鼓灯和梆子戏：一把剪刀、一面鼓、一段唱腔，
+                                        就能把寻常日子过得热热闹闹。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="acc-item">
+                            <h4 class="acc-h">
+                                <button class="acc-btn" id="acc-btn-3" type="button" aria-expanded="false" aria-controls="acc-panel-3">
+                                    <span class="acc-index" aria-hidden="true">03</span>
+                                    <span class="acc-title">味道与日常</span>
+                                    <span class="acc-icon" aria-hidden="true"></span>
+                                </button>
+                            </h4>
+                            <div class="acc-panel" id="acc-panel-3" role="region" aria-labelledby="acc-btn-3">
+                                <div class="acc-inner">
+                                    <p>
+                                        格拉条筋道，拌上芝麻酱和豆芽；枕头馍厚实，一个就能顶一顿饭；
+                                        撒汤是清晨的标配，配上一笼蒸饺刚刚好。还有卷馍、地锅鸡、粉鸡……
+                                        在阜阳，吃饭这件事从来都很认真。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1160,7 +1566,7 @@
                             关于阅读、足球、跑步，或者网页上任何想改的地方，都欢迎来信。
                             点一下按钮，邮箱地址会复制到剪贴板。
                         </p>
-                        <p style="margin:26px 0 0">
+                        <p style="margin:28px 0 0">
                             <button class="mail-btn" id="copyBtn" type="button">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <rect x="9" y="9" width="12" height="12" rx="2.5"></rect>
@@ -1176,6 +1582,7 @@
                         <h3>我的信息</h3>
                         <ul>
                             <li><span>姓名</span><strong>王天瑞</strong></li>
+                            <li><span>家乡</span><strong>安徽阜阳</strong></li>
                             <li><span>邮箱</span><a href="mailto:azzdb123@qq.com">azzdb123@qq.com</a></li>
                             <li><span>推荐</span><a href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">哔哩哔哩</a></li>
                             <li><span>状态</span><strong>持续学习中</strong></li>
@@ -1188,7 +1595,7 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <p>© <span id="year">2025</span> 王天瑞 · 用 HTML / CSS / JavaScript 手写完成</p>
+            <p>© <span id="year">2025</span> 王天瑞 · 安徽阜阳 · 用 HTML / CSS / JavaScript 手写完成</p>
             <p><a href="#top">回到顶部 ↑</a></p>
         </div>
     </footer>
@@ -1260,6 +1667,9 @@
                 document.addEventListener('keydown', function (event) {
                     if (event.key === 'Escape') setMenu(false);
                 });
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth > 880) setMenu(false);
+                }, { passive: true });
             }
 
             /* ---------- 3. 滚动：进度条 / 顶栏阴影 / 回到顶部 ---------- */
@@ -1312,10 +1722,20 @@
             }
 
             if ('IntersectionObserver' in window && sections.length) {
+                var visible = {};
                 var spy = new IntersectionObserver(function (entries) {
                     entries.forEach(function (entry) {
-                        if (entry.isIntersecting) setActive(entry.target.id);
+                        visible[entry.target.id] = entry.isIntersecting;
                     });
+                    var current = '';
+                    sections.some(function (section) {
+                        if (visible[section.id]) {
+                            current = section.id;
+                            return true;
+                        }
+                        return false;
+                    });
+                    setActive(current);
                 }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
                 sections.forEach(function (section) { spy.observe(section); });
             }
@@ -1341,9 +1761,9 @@
             var typedEl = document.getElementById('typed');
             var phrases = [
                 '一名热爱成长的学生',
+                '来自安徽阜阳的学生',
                 '在书页之间遇见更大的世界',
-                '球场与跑道上的行动派',
-                '正在学习网页编程的初学者'
+                '球场与跑道上的行动派'
             ];
 
             if (typedEl) {
@@ -1375,7 +1795,55 @@
                 }
             }
 
-            /* ---------- 7. 复制邮箱 ---------- */
+            /* ---------- 7. 家乡手风琴 ---------- */
+            var accItems = Array.prototype.slice.call(document.querySelectorAll('.acc-item'));
+            var toggleAllBtn = document.getElementById('toggleAll');
+
+            function setAccItem(item, open) {
+                var btn = item.querySelector('.acc-btn');
+                var panel = item.querySelector('.acc-panel');
+                if (!btn || !panel) return;
+                item.classList.toggle('open', open);
+                btn.setAttribute('aria-expanded', String(open));
+                panel.setAttribute('aria-hidden', String(!open));
+                if ('inert' in panel) panel.inert = !open;
+            }
+
+            function syncToggleAll() {
+                if (!toggleAllBtn) return;
+                var allOpen = accItems.length > 0 && accItems.every(function (item) {
+                    return item.classList.contains('open');
+                });
+                toggleAllBtn.setAttribute('aria-expanded', String(allOpen));
+                toggleAllBtn.textContent = allOpen ? '全部收起' : '全部展开';
+            }
+
+            accItems.forEach(function (item) {
+                var btn = item.querySelector('.acc-btn');
+                if (!btn) return;
+                setAccItem(item, item.classList.contains('open'));
+                btn.addEventListener('click', function () {
+                    var willOpen = !item.classList.contains('open');
+                    accItems.forEach(function (other) {
+                        if (other !== item) setAccItem(other, false);
+                    });
+                    setAccItem(item, willOpen);
+                    syncToggleAll();
+                });
+            });
+
+            if (toggleAllBtn) {
+                toggleAllBtn.addEventListener('click', function () {
+                    var allOpen = accItems.every(function (item) {
+                        return item.classList.contains('open');
+                    });
+                    accItems.forEach(function (item) { setAccItem(item, !allOpen); });
+                    syncToggleAll();
+                });
+            }
+            syncToggleAll();
+
+            /* ---------- 8. 复制邮箱 ---------- */
             var EMAIL = 'azzdb123@qq.com';
             var copyBtn = document.getElementById('copyBtn');
             var copyLabel = document.getElementById('copyLabel');
@@ -1434,7 +1902,7 @@
                 });
             }
 
-            /* ---------- 8. 页脚年份 ---------- */
+            /* ---------- 9. 页脚年份 ---------- */
             var yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = String(new Date().getFullYear());
         })();
